@@ -9,7 +9,7 @@ ENV KAFKA_VERSION=$kafka_version \
 
 ENV PATH=${PATH}:${KAFKA_HOME}/bin
 
-COPY kafka-downloader.sh start-kafka.sh /tmp/
+COPY bin/kafka-downloader.sh bin/start-kafka.sh /tmp/
 
 RUN set -eux \
     && apt-get update \

@@ -40,6 +40,18 @@ if [[ -n "$RACK_COMMAND" && -z "$KAFKA_BROKER_RACK" ]]; then
     export KAFKA_BROKER_RACK
 fi
 
+if [[ -z "$KAFKA_ADVERTISED_HOST_NAME$KAFKA_LISTENERS" ]]; then
+    if [[ -n "$KAFKA_ADVERTISED_LISTENERS" ]]; then
+        echo "ERROR: Missing environment variable KAFKA_LISTENERS. Must be specified when using KAFKA_ADVERTISED_LISTENERS"
+        exit 1
+    elif [[ -z "$HOSTNAME_VALUE" ]]; then
+        echo "ERROR: No listener or advertised hostname configuration provided in environment."
+        echo "       Please define KAFKA_LISTENERS / (deprecated) KAFKA_ADVERTISED_HOST_NAME"
+        exit 1
+    fi
+    export KAFKA_ADVERTISED_HOST_NAME="$HOSTNAME_VALUE"
+fi
+
 echo "" >> "$KAFKA_HOME/config/server.properties"
 
 (
